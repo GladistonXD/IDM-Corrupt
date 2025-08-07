@@ -1,6 +1,6 @@
 # 🛡️ CheckUpdtVMProtector
 
-A Python service for Windows designed to **remove the corrupted IDM error pop-up** (Internet Download Manager) and **block automatic updates** that frequently reactivate the `CheckUpdtVM` key.
+A Python service for Windows designed to **remove the corrupt IDM error pop-up** (Internet Download Manager) and **block automatic updates** that frequently reactivate the `CheckUpdtVM` key.
 
 ---
 
