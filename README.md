@@ -108,7 +108,7 @@ You can start, stop, or configure the service from there as well.
 
 - The service does not interfere with other IDM functions.
 - It only prevents the `CheckUpdtVM` value from being re-enabled, which causes the corruption error.
-- The value is checked and corrected every **5 seconds**.
+- The value is checked and corrected every **3 seconds**.
 
 ---
 
