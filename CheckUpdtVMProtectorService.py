@@ -87,7 +87,7 @@ class CheckUpdtVMProtector(win32serviceutil.ServiceFramework):
             except Exception as e:
                 servicemanager.LogErrorMsg(f"❌ ERROR: {str(e)}")
 
-            time.sleep(5)
+            time.sleep(3)
 
     @classmethod
     def install(cls, *args):
