@@ -53,6 +53,8 @@ pip install pywin32
 
 **1. Install the service:**
 
+Run as administrator
+
 ```bash
 python CheckUpdtVMProtectorService.py install
 ```
@@ -93,6 +95,7 @@ CheckUpdtVM Registry Protection
 
 You can start, stop, or configure the service from there as well.
 
+🔄It is necessary to close and open the IDM for it to take effect.🔄
 ---
 
 ## 🛠️ Technologies Used
