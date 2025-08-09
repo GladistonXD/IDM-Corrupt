@@ -30,7 +30,7 @@ The service monitors and restores the value of this Windows registry key:
 HKEY_USERS\<SID>\SOFTWARE\DownloadManager\CheckUpdtVM
 ```
 
-Whenever it's different from `"0"`, the value will be automatically corrected every 5 seconds.
+Whenever it's different from `"0"`, the value will be automatically corrected every 3 seconds.
 
 ---
 
