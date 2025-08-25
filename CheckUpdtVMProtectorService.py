@@ -38,16 +38,16 @@ class CheckUpdtVMProtector(win32serviceutil.ServiceFramework):
                 try:
                     win32service.ChangeServiceConfig(
                         svc,
-                        win32service.SERVICE_NO_CHANGE,       
-                        win32service.SERVICE_AUTO_START,      
-                        win32service.SERVICE_NO_CHANGE,       
-                        "",                                  
-                        None,                                 
-                        0,                                    
-                        None,                                
-                        None,                                 
-                        None,                                 
-                        ""                                    
+                        win32service.SERVICE_NO_CHANGE,
+                        win32service.SERVICE_AUTO_START,
+                        win32service.SERVICE_NO_CHANGE,
+                        "",
+                        None,
+                        0,
+                        None,
+                        None,
+                        None,
+                        ""
                     )
 
                     win32service.ChangeServiceConfig2(
@@ -56,14 +56,14 @@ class CheckUpdtVMProtector(win32serviceutil.ServiceFramework):
                         {'fDelayedAutostart': 1}
                     )
 
-                    servicemanager.LogInfoMsg("✅ Setado para 'Automático (atraso na inicialização)' via ChangeServiceConfig2.")
+                    servicemanager.LogInfoMsg("✅ Set to 'Automatic (delayed startup)' ChangeServiceConfig2.")
                 finally:
                     win32service.CloseServiceHandle(svc)
             finally:
                 win32service.CloseServiceHandle(scm)
 
         except Exception as e:
-            servicemanager.LogErrorMsg(f"❌ Falha ao setar Automatic (Delayed Start) via WinAPI: {e}")
+            servicemanager.LogErrorMsg(f"❌ Failed to set Automatic (Delayed Start) WinAPI: {e}")
 
             try:
                 subprocess.run(
@@ -72,7 +72,7 @@ class CheckUpdtVMProtector(win32serviceutil.ServiceFramework):
                 )
                 servicemanager.LogInfoMsg("✅ Fallback: 'sc config ... start= delayed-auto' aplicado.")
             except Exception as e2:
-                servicemanager.LogErrorMsg(f"❌ Fallback via sc.exe também falhou: {e2}")
+                servicemanager.LogErrorMsg(f"❌ Fallback sc.exe also failed: {e2}")
 
 
 
