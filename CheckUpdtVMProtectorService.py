@@ -24,8 +24,6 @@ class CheckUpdtVMProtector(win32serviceutil.ServiceFramework):
         self.running = False
         win32event.SetEvent(self.hWaitStop)
 
-    import subprocess
-
     def _set_automatic_delayed_start(self):
         try:
             scm = win32service.OpenSCManager(None, None, win32service.SC_MANAGER_ALL_ACCESS)
