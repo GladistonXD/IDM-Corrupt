@@ -26,24 +26,61 @@ class CheckUpdtVMProtector(win32serviceutil.ServiceFramework):
 
     import subprocess
 
+    def _set_automatic_delayed_start(self):
+        try:
+            scm = win32service.OpenSCManager(None, None, win32service.SC_MANAGER_ALL_ACCESS)
+            try:
+                svc = win32service.OpenService(
+                    scm,
+                    self._svc_name_,
+                    win32service.SERVICE_CHANGE_CONFIG | win32service.SERVICE_QUERY_CONFIG
+                )
+                try:
+                    win32service.ChangeServiceConfig(
+                        svc,
+                        win32service.SERVICE_NO_CHANGE,       
+                        win32service.SERVICE_AUTO_START,      
+                        win32service.SERVICE_NO_CHANGE,       
+                        "",                                  
+                        None,                                 
+                        0,                                    
+                        None,                                
+                        None,                                 
+                        None,                                 
+                        ""                                    
+                    )
+
+                    win32service.ChangeServiceConfig2(
+                        svc,
+                        win32service.SERVICE_CONFIG_DELAYED_AUTO_START_INFO,
+                        {'fDelayedAutostart': 1}
+                    )
+
+                    servicemanager.LogInfoMsg("✅ Setado para 'Automático (atraso na inicialização)' via ChangeServiceConfig2.")
+                finally:
+                    win32service.CloseServiceHandle(svc)
+            finally:
+                win32service.CloseServiceHandle(scm)
+
+        except Exception as e:
+            servicemanager.LogErrorMsg(f"❌ Falha ao setar Automatic (Delayed Start) via WinAPI: {e}")
+
+            try:
+                subprocess.run(
+                    ["sc", "config", self._svc_name_, "start=", "delayed-auto"],
+                    check=True, capture_output=True, text=True
+                )
+                servicemanager.LogInfoMsg("✅ Fallback: 'sc config ... start= delayed-auto' aplicado.")
+            except Exception as e2:
+                servicemanager.LogErrorMsg(f"❌ Fallback via sc.exe também falhou: {e2}")
+
+
+
     def SvcDoRun(self):
         servicemanager.LogInfoMsg("Service started: CheckUpdtVMProtector")
-
-        try:
-            # Set startup type to automatic via sc command
-            subprocess.run(
-                ["sc", "config", self._svc_name_, "start=", "auto"],
-                check=True,
-                capture_output=True,
-                text=True
-            )
-            servicemanager.LogInfoMsg("✅ Startup type set to Automatic via sc.")
-        except subprocess.CalledProcessError as e:
-            servicemanager.LogErrorMsg(f"❌ Error configuring sc: {e.stderr.strip()}")
-        except Exception as e:
-            servicemanager.LogErrorMsg(f"❌ Unexpected error: {e}")
-
+        self._set_automatic_delayed_start()
         self.main()
+
 
     def get_logged_in_user_sid(self):
         try:
@@ -87,7 +124,7 @@ class CheckUpdtVMProtector(win32serviceutil.ServiceFramework):
             except Exception as e:
                 servicemanager.LogErrorMsg(f"❌ ERROR: {str(e)}")
 
-            time.sleep(3)
+            time.sleep(2)
 
     @classmethod
     def install(cls, *args):
