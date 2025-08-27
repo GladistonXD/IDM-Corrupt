@@ -65,6 +65,8 @@ python CheckUpdtVMProtectorService.py install
 python CheckUpdtVMProtectorService.py start
 ```
 
+## ⚙️ Uninstall the service
+
 **3. (Optional) Stop the service:**
 
 ```bash
